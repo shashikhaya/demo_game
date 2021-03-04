@@ -16,5 +16,9 @@
     "url": "https://github.com/shashikhaya/demo_game/issues"
   },
   "homepage": "https://github.com/shashikhaya/demo_game#readme",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "futil-js": "^1.67.3",
+    "lodash": "^4.17.21"
+  }
 }
