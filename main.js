@@ -1,6 +1,12 @@
 /* eslint-disable no-var */
 
+import { read } from 'fs'
+import { rawListeners } from 'npm'
 import { createInterface } from 'readline'
+const readline = createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
 
 class Room {
   constructor () {
@@ -88,19 +94,15 @@ class Desk {
     }
   }
 
-  toggleDraw () {
+  toggleDraw (state) {
     this.drawOpen = (!(this.drawOpen))
     keyFound = true
   }
 
-  inspectRoom () {
+  inspectRoom (state) {
     state = 'room'
   }
 }
-const readline = createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
 
 function main () {
   // initialise game
@@ -114,8 +116,13 @@ function main () {
   // enter game loop
   do {
     objectDict[state].displayOptions() // displaying updated options for the currently inspected object
-    askQuestion(objectDict,state)
-    counter++
+    askQuestion(objectDict, state)
+    // readline.question(`What would you like to do? pick between 1 and ${objectDict[state].options.length}` (ans) => {
+    //   // objectDict[state].handleInput(ans)
+    //   console.log(ans)
+    //   readline.close()
+    // })
+    // counter++
   } while (objectDict.room.doorOpen === false)
 
   // doorOpen set to true -> game is finsihed -> log stats
@@ -125,19 +132,19 @@ function main () {
 
 function getElapsedTime (initTime) {
   // calculate elapsed time
-  let eTime = Date.now() - initTime // times in milliseconds at this point
+  const eTime = Date.now() - initTime // times in milliseconds at this point
   return (eTime / 60000).toFixed(2)
 }
 
-function askQuestion (objects_dict,state) {
-  readline.question(`What would you like to do? pick between 1 and ${objects_dict[state].options.length}`, (ans) => {
+var askQuestion = function (objects_dict, state) {
+  readline.question(`What would you like to do? pick between 1 and ${objects_dict[state].options.length}`, ans => {
     objects_dict[state].handleInput(ans)
-    readline.close()
+    return readline.close()
   })
 }
 
 function initialiseObjects () {
-  let objects = {}
+  const objects = {}
   objects.room = new Room()
   objects.desk = new Desk()
   return objects
