@@ -158,7 +158,7 @@ function main () {
      YSSP  YSS'      YSSP  SSS    S*S  S*S           YSSP        S*S    SSS    YSSP~YSSY      YSSP~YSSY    SSS     S*S  
                                   SP   SP                        SP                                                SP   
                                   Y    Y                         Y                                                 Y    
-  Designed and developed by Shashi, Joseph and Danyaal                                                                                                                                                                                                                                 
+  Designed and developed by Shashi, Joseph and Danyaal  Ghafoor                                                                                                                                                                                                                               
                                          
  `
   )
