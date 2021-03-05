@@ -1,12 +1,8 @@
 /* eslint-disable no-var */
 
-import { read } from 'fs'
-import { rawListeners } from 'npm'
 import { createInterface } from 'readline'
-
 import promptSync from 'prompt-sync';
 const prompt = promptSync({sigint: true});
->>>>>>> 9b2ec483da7f917b99ec71b1d13ab4339a535ff6
 
 class Room {
   constructor () {
@@ -94,15 +90,19 @@ class Desk {
     }
   }
 
-  toggleDraw (state) {
+  toggleDraw () {
     this.drawOpen = (!(this.drawOpen))
     keyFound = true
   }
 
-  inspectRoom (state) {
+  inspectRoom () {
     state = 'room'
   }
 }
+const readline = createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
 
 function main () {
   // initialise game
@@ -116,13 +116,8 @@ function main () {
   // enter game loop
   do {
     objectDict[state].displayOptions() // displaying updated options for the currently inspected object
-    askQuestion(objectDict, state)
-    // readline.question(`What would you like to do? pick between 1 and ${objectDict[state].options.length}` (ans) => {
-    //   // objectDict[state].handleInput(ans)
-    //   console.log(ans)
-    //   readline.close()
-    // })
-    // counter++
+    askQuestion(objectDict,state)
+    counter++
   } while (objectDict.room.doorOpen === false)
 
   // doorOpen set to true -> game is finsihed -> log stats
@@ -132,7 +127,7 @@ function main () {
 
 function getElapsedTime (initTime) {
   // calculate elapsed time
-  const eTime = Date.now() - initTime // times in milliseconds at this point
+  let eTime = Date.now() - initTime // times in milliseconds at this point
   return (eTime / 60000).toFixed(2)
 }
 
@@ -140,11 +135,10 @@ function askQuestion (objects_dict,state) {
   let ans = prompt(`What would you like to do? pick between 1 and ${objects_dict[state].options.length}`)
   objects_dict[state].handleInput(ans)
   console.log(ans)
->>>>>>> 9b2ec483da7f917b99ec71b1d13ab4339a535ff6
 }
 
 function initialiseObjects () {
-  const objects = {}
+  let objects = {}
   objects.room = new Room()
   objects.desk = new Desk()
   return objects
