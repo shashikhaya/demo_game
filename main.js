@@ -6,7 +6,7 @@ import { createInterface } from 'readline'
 
 import promptSync from 'prompt-sync';
 const prompt = promptSync({sigint: true});
->>>>>>> 9b2ec483da7f917b99ec71b1d13ab4339a535ff6
+
 
 class Room {
   constructor () {
@@ -140,7 +140,6 @@ function askQuestion (objects_dict,state) {
   let ans = prompt(`What would you like to do? pick between 1 and ${objects_dict[state].options.length}`)
   objects_dict[state].handleInput(ans)
   console.log(ans)
->>>>>>> 9b2ec483da7f917b99ec71b1d13ab4339a535ff6
 }
 
 function initialiseObjects () {
