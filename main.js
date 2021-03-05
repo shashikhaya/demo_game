@@ -63,7 +63,9 @@ class Desk {
   createOptions () {
     const options = [] // empty array called options
     options.push(`1. ${this.drawOpen ? 'Close' : 'Open'} drawer`) // adding option 1
-    options.push('2. Inspect room') // adding option 2
+    options.push('2. Inspect picture on the desk')
+    options.push('3. Inspect room') // adding option 2
+
     return options// options ='1. \n 2. \n
   } // call refresh options when option 1 selected
 
@@ -84,7 +86,12 @@ class Desk {
         case 1:
           this.toggleDraw()
           break
-        case 2: this.inspectRoom()
+
+        case 2:
+          this.inspectPicture()
+          break
+
+        case 3: this.inspectRoom()
           break
       }
     }
@@ -95,12 +102,65 @@ class Desk {
     global.keyFound = true
   }
 
+  inspectPicture() {
+    console.log(
+`───────▓▓▓▓▓▓▓────────────▒▒▒▒▒▒
+──────▓▓▒▒▒▒▒▒▒▓▓────────▒▒░░░░░░▒▒
+────▓▓▒▒▒▒▒▒▒▒▒▒▒▓▓────▒▒░░░░░░░░░▒▒▒
+───▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒░░░░░░░░░░░░░░▒
+──▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░▒
+──▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░▒
+─▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░░▒
+▓▓▒▒▒▒▒▒░░░░░░░░░░░▒▒░░▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒
+▓▓▒▒▒▒▒▒▀▀▀▀▀███▄▄▒▒▒░░░▄▄▄██▀▀▀▀▀░░░░░░▒
+▓▓▒▒▒▒▒▒▒▄▀████▀███▄▒░▄████▀████▄░░░░░░░▒
+▓▓▒▒▒▒▒▒█──▀█████▀─▌▒░▐──▀█████▀─█░░░░░░▒
+▓▓▒▒▒▒▒▒▒▀▄▄▄▄▄▄▄▄▀▒▒░░▀▄▄▄▄▄▄▄▄▀░░░░░░░▒
+─▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░▒
+──▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░▒
+───▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀▀░░░░░░░░░░░░░░▒
+────▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░▒▒
+─────▓▓▒▒▒▒▒▒▒▒▒▒▄▄▄▄▄▄▄▄▄░░░░░░░░▒▒
+──────▓▓▒▒▒▒▒▒▒▄▀▀▀▀▀▀▀▀▀▀▀▄░░░░░▒▒
+───────▓▓▒▒▒▒▒▀▒▒▒▒▒▒░░░░░░░▀░░░▒▒
+────────▓▓▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░▒▒
+──────────▓▓▒▒▒▒▒▒▒▒▒░░░░░░░░▒▒
+───────────▓▓▒▒▒▒▒▒▒▒░░░░░░░▒▒
+─────────────▓▓▒▒▒▒▒▒░░░░░▒▒
+───────────────▓▓▒▒▒▒░░░░▒▒
+────────────────▓▓▒▒▒░░░▒▒
+──────────────────▓▓▒░▒▒
+───────────────────▓▒░▒
+────────────────────▓▒1234
+`)
+  }
+
   inspectRoom () {
     global.state = 'room'
   }
 }
 
 function main () {
+  console.log(
+    `
+      sSSs    sSSs    sSSs   .S_SSSs     .S_sSSs      sSSs         .S_sSSs      sSSs_sSSs      sSSs_sSSs     .S_SsS_S.   
+    d%%SP   d%%SP   d%%SP  .SS~SSSSS   .SS~YS%%b    d%%SP        .SS~YS%%b    d%%SP~YS%%b    d%%SP~YS%%b   .SS~S*S~SS.  
+   d%S'    d%S'    d%S'    S%S   SSSS  S%S    S%b  d%S'          S%S    S%b  d%S'      S%b  d%S'      S%b  S%S  Y' S%S  
+   S%S     S%|     S%S     S%S    S%S  S%S    S%S  S%S           S%S    S%S  S%S       S%S  S%S       S%S  S%S     S%S  
+   S&S     S&S     S&S     S%S SSSS%S  S%S    d*S  S&S           S%S    d*S  S&S       S&S  S&S       S&S  S%S     S%S  
+   S&S_Ss  Y&Ss    S&S     S&S  SSS%S  S&S   .S*S  S&S_Ss        S&S   .S*S  S&S       S&S  S&S       S&S  S&S     S&S  
+   S&S~SP   S&&S   S&S     S&S    S&S  S&S_sdSSS   S&S~SP        S&S_sdSSS   S&S       S&S  S&S       S&S  S&S     S&S  
+   S&S        S*S  S&S     S&S    S&S  S&S~YSSY    S&S           S&S~YSY%b   S&S       S&S  S&S       S&S  S&S     S&S  
+   S*b        l*S  S*b     S*S    S&S  S*S         S*b           S*S    S%b  S*b       d*S  S*b       d*S  S*S     S*S  
+   S*S.      .S*P  S*S.    S*S    S*S  S*S         S*S.          S*S    S%S  S*S.     .S*S  S*S.     .S*S  S*S     S*S  
+    SSSbs  sSS*S    SSSbs  S*S    S*S  S*S          SSSbs        S*S    S&S   SSSbs_sdSSS    SSSbs_sdSSS   S*S     S*S  
+     YSSP  YSS'      YSSP  SSS    S*S  S*S           YSSP        S*S    SSS    YSSP~YSSY      YSSP~YSSY    SSS     S*S  
+                                  SP   SP                        SP                                                SP   
+                                  Y    Y                         Y                                                 Y    
+                                                                                                                                                                                                                                  
+                                         
+ `
+  )
   // initialise game
   global.objectDict = initialiseObjects()
   global.state = 'room'
@@ -125,9 +185,9 @@ function main () {
   playAgain()
 }
 
-function playAgain() {
+function playAgain () {
   console.log('')
-  console.log(`Would you like to play again? 'Yes' or 'No'`)
+  console.log('Would you like to play again? \'Yes\' or \'No\'')
   const ans = prompt('>  ')
   if (ans === 'Yes') {
     return main()
@@ -143,17 +203,15 @@ function getElapsedTime (initTime) {
   const eTime = Date.now() - initTime // times in milliseconds at this point
   return (eTime / 60000).toFixed(2)
 }
-function updateStatus() {
+function updateStatus () {
   updateInventory()
   console.log(`You are now inspecting the ${global.state}`)
   console.log(`Inventory: ${global.inventory}`)
   // if global.keyfound {console.log(inventory)}
   global.objectDict[global.state].displayOptions() // displaying updated options for the currently inspected object
-  
 }
-function updateInventory() {
+function updateInventory () {
   if ((global.keyFound) && !(global.inventory.includes('Key'))) { global.inventory = ['Key'] }
-
 }
 
 function askQuestion () {
