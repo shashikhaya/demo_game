@@ -2,7 +2,6 @@
 
 import promptSync from 'prompt-sync'
 import { exit } from 'process'
-import chalk from 'chalk'
 const prompt = promptSync({ sigint: true })
 
 class Room {
@@ -73,11 +72,6 @@ class Desk {
   constructor () {
     this.drawOpen = false
     this.options = this.createOptions()
-    if (global.KEY_LOCATION === 1) {
-      this.hasKey = true
-    } else {
-      this.hasKey = false
-    }
   }
 
   createOptions () {
@@ -122,9 +116,7 @@ class Desk {
 
   toggleDraw () {
     this.drawOpen = !(this.drawOpen)
-    if (this.hasKey) {
-      global.keyFound = true
-    }
+    global.keyFound = true
   }
 
   inspectPicture () {
@@ -205,16 +197,15 @@ class StartMenu {
 
   displayRules () {
     console.log(
-`The rules are simple...
-
-You are stuck in the room and you need to escape!
-
-1. To escape the room you should inspect and interact with the different objects in the room to look for clues and items which will help you in your quest.
-2. On each round, we will tell you what options you have and you must choose one of those options. To do so, you just need to insert the option number and we will do the rest
-3. Play in fullscreen for the best experience
-3. If you start feeling claustrophobic, take a deep breath, relax and remember it is only a game :)
-4. Have fun, check out the source on ( https://github.com/shashikhaya/demo_game ) and let us know what you think!
-`)
+      `The rules are simple...
+      
+      You are stuck in the room and you need to get escape!
+      1. To escape the room you should inspect and interact with the different objects in the room to look for clues and items which will help you in your quest.
+      2. On each round, we will tell you what options you have and you must choose one of those options. To do so, you just need to insert the option number and we will do the rest
+      3. Play in fullscreen for the best experience
+      3. If you start feeling claustrophic, take a deep breath, relax and remember it is only a game :)
+      4. Have fun, check out the source on ( https://github.com/shashikhaya/demo_game ) and let us know what you think
+      `)
   }
 }
 
@@ -278,15 +269,13 @@ class WallPic {
       console.log(
 `
 Who is it in the picture? You can put his first, last or full name or type 'quit' to go back
-${this.guesses >= 3 ? chalk.yellow.bold(this.hint) : `${3 - this.guesses} guesses before hint shown`}`) // if guesses > 3 display hint
+${this.guesses >= 3 ? this.hint : `${3 - this.guesses} guesses before hint shown`}`) // if guesses > 3 display hint
       const ans = prompt('>  ')
 
       if (correct.includes(ans.toLowerCase())) {
         this.safeRevealed = true
         console.log('You are correct! The picture on the wall moved to reveal a safe')
-      } else if (ans.toLowerCase() === 'quit') {
-        break
-      } else {
+      } else if (ans.toLowerCase() === 'quit') { break } else {
         console.log('Thats not right, try again!')
         this.guesses++
       }
@@ -342,16 +331,11 @@ ${this.guesses >= 3 ? chalk.yellow.bold(this.hint) : `${3 - this.guesses} guesse
 class WallSafe {
   constructor () {
     this.options = this.createOptions()
-    this.password = '1234'
+    this.password = '0121'
     this.unlocked = false // if unlocked == true -> user can open safe door
     this.guesses = 0 // counter for attemped guesses of person in picture
     this.hint = 'Hint : Look in the picture on the desk'
     this.doorOpen = false
-    if (global.KEY_LOCATION === 2) {
-      this.hasKey = true
-    } else {
-      this.hasKey = false
-    }
   }
 
   createOptions () {
@@ -396,6 +380,7 @@ class WallSafe {
 
   toggleDoor () {
     this.doorOpen = !(this.doorOpen)
+    global.safeUnlocked = true
   }
 
   enterPassword () {
@@ -404,16 +389,12 @@ class WallSafe {
       console.log(
 `
 Enter the password or type 'quit' to go back... It is a four digit number 
-${this.guesses >= 3 ? chalk.yellow.bold(this.hint) : `${3 - this.guesses} guesses before hint shown`}`) // if guesses > 3 display hint
+${this.guesses >= 3 ? this.hint : `${3 - this.guesses} guesses before hint shown`}`) // if guesses > 3 display hint
       const ans = prompt('>  ')
 
       if (ans === this.password) {
         this.unlocked = true
         console.log('You are correct! The safe is now unlocked')
-        if (this.hasKey) {
-          global.keyFound = true
-        }
-        global.safeUnlocked = true
       } else if (ans.toLowerCase() === 'quit') { break } else {
         console.log('Thats not right, try again!')
         this.guesses++
@@ -512,7 +493,6 @@ function main () {
   } while (!global.startMenu.gameStarted)
 
   // initialise game - maybe turn into gameLoop function
-  global.KEY_LOCATION = getRandomInt(2)
   global.objectDict = initialiseObjects()
   global.state = 'room'
   global.inventory = 'Empty'
@@ -523,7 +503,7 @@ function main () {
 
   // enter game loop
   do {
-    console.log('--------------------------------------------------------------------')
+    console.log('')
     updateStatus()
     askQuestion()
     counter++
@@ -532,7 +512,7 @@ function main () {
   // maybe turn into endLoop function
   // doorOpen set to true -> game is finsihed -> log stats
   console.log(
-    `Well done, you have escaped in ${counter} moves and it took you ${getElapsedTime(INIT_TIME_MS)[0]} minutes and ${getElapsedTime(INIT_TIME_MS)[1]} seconds.`)
+    `Well done, you have escaped in ${counter} moves and it took you ${getElapsedTime(INIT_TIME_MS)} minutes`)
 
   playAgain()
 }
@@ -555,7 +535,8 @@ function displayWelcomeMessage () {
                                   SP   SP                        SP                                                SP   
                                   Y    Y                         Y                                                 Y    
                                                                     Designed and developed by Shashi, Joseph & Danyaal                                                                                                                                                                                                                                 
-`)
+                                         
+ `)
 }
 
 function playAgain () {
@@ -574,16 +555,13 @@ function playAgain () {
 function getElapsedTime (initTime) {
   // calculate elapsed time
   const eTime = Date.now() - initTime // times in milliseconds at this point
-  const timeInMins = (eTime / 60000) // time in minutes
-  const minutes = Math.floor(timeInMins)
-  const seconds = Math.round((timeInMins - minutes) * 60)
-  return [minutes, seconds]
+  return (eTime / 60000).toFixed(2)
 }
 function updateStatus () {
   updateInventory()
   console.log(
 `You are now inspecting the ${global.state}
-Inventory: ${global.inventory.includes('Key') ? chalk.yellow.bold(global.inventory) : global.inventory} 
+Inventory: ${global.inventory}
 `)
   // if global.keyfound {console.log(inventory)}
   global.objectDict[global.state].displayOptions() // displaying updated options for the currently inspected object
@@ -597,10 +575,6 @@ function askQuestion () {
 What would you like to do next? Pick between 1 and ${global.objectDict[global.state].options.length}`)
   const ans = prompt('>  ')
   global.objectDict[global.state].handleInput(ans)
-}
-
-function getRandomInt (max) {
-  return (Math.floor(Math.random() * Math.floor(max) + 1)) // from 1 up to and including max
 }
 
 function initialiseObjects () {
