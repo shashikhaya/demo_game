@@ -418,7 +418,7 @@ function main () {
   // maybe turn into endLoop function
   // doorOpen set to true -> game is finsihed -> log stats
   console.log(
-    `Well done, you have escaped in ${counter} moves and it took you ${getElapsedTime(INIT_TIME_MS)} minutes`)
+    `Well done, you have escaped in ${counter} moves and it took you ${getElapsedTime(INIT_TIME_MS)[0]} minutes and ${getElapsedTime(INIT_TIME_MS)[1]} seconds.`)
 
   playAgain()
 }
@@ -464,7 +464,11 @@ function playAgain () {
 function getElapsedTime (initTime) {
   // calculate elapsed time
   const eTime = Date.now() - initTime // times in milliseconds at this point
-  return (eTime / 60000).toFixed(2)
+  const timeInMins=(eTime / 60000) // time in minutes
+  const minutes = Math.floor(timeInMins)
+  const seconds = Math.round((timeInMins - minutes)*60)
+  let elapsedTimeArr = [minutes, seconds]
+  return elapsedTimeArr
 }
 function updateStatus () {
   updateInventory()
