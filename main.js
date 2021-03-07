@@ -17,6 +17,7 @@ class Room {
     options.push('1. Inspect desk') // adding option 1
     options.push('2. Inspect picture on the wall')
     options.push('3. Try door') // adding option 2
+    options.push('4. Give up')
     return options
   }
 
@@ -39,6 +40,8 @@ class Room {
         break
       case 3: this.tryDoor()
         break
+      case 4:
+        return exit()
       default: console.log('Error, you cant do that! Try again')
         break
     }
@@ -73,6 +76,7 @@ class Desk {
     options.push(`1. ${this.drawOpen ? 'Close' : 'Open'} drawer`) // adding option 1
     options.push('2. Inspect picture on the desk')
     options.push('3. Inspect room') // adding option 2
+    options.push('4. Give up')
 
     return options// options ='1. \n 2. \n
   } // call refresh options when option 1 selected
@@ -99,6 +103,9 @@ class Desk {
       case 3: this.inspectRoom()
         break
 
+      case 4:
+        return exit()
+
       default: console.log('Error, you cant do that! Try again')
         break
     }
@@ -110,6 +117,7 @@ class Desk {
   }
 
   inspectPicture () {
+    let pw = global.objectDict.safe.password
     console.log(
 
 `───────▓▓▓▓▓▓▓────────────▒▒▒▒▒▒
@@ -126,7 +134,7 @@ class Desk {
 ▓▓▒▒▒▒▒▒▒▀▄▄▄▄▄▄▄▄▀▒▒░░▀▄▄▄▄▄▄▄▄▀░░░░░░░▒
 ─▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░▒
 ──▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░▒
-───▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀▀░░░░░░░░░░░░░░▒
+───▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀▀░░░░${pw}░░░░░░▒
 ────▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░▒▒
 ─────▓▓▒▒▒▒▒▒▒▒▒▒▄▄▄▄▄▄▄▄▄░░░░░░░░▒▒
 ──────▓▓▒▒▒▒▒▒▒▄▀▀▀▀▀▀▀▀▀▀▀▄░░░░░▒▒
@@ -139,7 +147,7 @@ class Desk {
 ────────────────▓▓▒▒▒░░░▒▒
 ──────────────────▓▓▒░▒▒
 ───────────────────▓▒░▒
-────────────────────▓▒1234
+────────────────────▓▒
 `)
   }
 
@@ -212,6 +220,7 @@ class WallPic {
     // could make option numbers dynamic by setting i=0 and each option is `${i++}...` -> would also then need to change how inputs are handled
     options.push(`1. ${this.safeRevealed ? 'Inspect safe' : 'Guess who is in the picture'}`)
     options.push('2. Inspect room')
+    options.push('3. Give up')
     return options
   }
 
@@ -233,6 +242,9 @@ class WallPic {
       case 2:
         this.inspectRoom()
         break
+
+      case 3:
+        return exit()
 
       default: console.log('Error, you cant do that! Try again')
         break
@@ -330,7 +342,8 @@ class WallSafe {
     const options = [] // empty array called options
     // could make option numbers dynamic by setting i=0 and each option is `${i++}...` -> would also then need to change how inputs are handled
     options.push(`1. ${this.unlocked ? `${this.doorOpen ? 'Open' : 'Close'} safe` : 'Enter the password'}`)
-    options.push('2. Inspect wallPic')
+    options.push('2. Inspect Picture on the wall')
+    options.push('3. Give up')
     return options
   }
 
@@ -352,6 +365,9 @@ class WallSafe {
       case 2:
         this.inspectWallPic()
         break
+
+      case 4:
+        return exit()
 
       default: console.log('Error, you cant do that! Try again')
         break
@@ -440,10 +456,7 @@ function displayWelcomeMessage () {
      YSSP  YSS'      YSSP  SSS    S*S  S*S           YSSP        S*S    SSS    YSSP~YSSY      YSSP~YSSY    SSS     S*S  
                                   SP   SP                        SP                                                SP   
                                   Y    Y                         Y                                                 Y    
-                                                                    Designed and developed by 
-                                                                                              Shashi,
-                                                                                                      Joseph,
-                                                                                                              Danyaal                                                                                                                                                                                                                                 
+                                                                    Designed and developed by Shashi, Joseph & Danyaal                                                                                                                                                                                                                                 
                                          
  `)
 }
