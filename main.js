@@ -14,8 +14,9 @@ class Room {
     const options = [] // empty array called options
     options.push('1. Inspect desk') // adding option 1
     options.push('2. Inspect picture on the wall')
-    options.push('3. Try door') // adding option 2
-    options.push('4. Give up')
+    options.push('3. Inspect Window')
+    options.push('4. Try door') // adding option 2
+    options.push('5. Give up')
     return options
   }
 
@@ -30,15 +31,15 @@ class Room {
 
   handleInput (input) {
     switch (parseInt(input)) {
-      case 1:
-        this.inspectDesk()
+      case 1:this.inspectDesk()
         break
-      case 2:
-        this.inspectWallPic()
+      case 2:this.inspectWallPic()
         break
-      case 3: this.tryDoor()
+      case 3:this.inspectWindow()
         break
-      case 4:
+      case 4:this.tryDoor()
+        break
+      case 5:
         return exit()
       default: console.log('Error, you cant do that! Try again')
         break
@@ -52,6 +53,10 @@ class Room {
 
   inspectDesk () {
     global.state = 'desk'
+  }
+
+  inspectWindow () {
+    global.state = 'window'
   }
 
   tryDoor () {
@@ -115,7 +120,7 @@ class Desk {
   }
 
   inspectPicture () {
-    let pw = global.objectDict.safe.password
+    const pw = global.objectDict.safe.password
     console.log(
 
 `───────▓▓▓▓▓▓▓────────────▒▒▒▒▒▒
@@ -362,7 +367,7 @@ class WallSafe {
         this.inspectWallPic()
         break
 
-      case 4:
+      case 3:
         return exit()
 
       default: console.log('Error, you cant do that! Try again')
@@ -396,6 +401,84 @@ ${this.guesses >= 3 ? this.hint : `${3 - this.guesses} guesses before hint shown
         this.guesses++
       }
     } while (!this.unlocked)
+  }
+}
+
+class Window { /// //////////////////////////// CHANGES /////////////////////////////////
+  constructor () {
+    this.options = this.createOptions()
+  }
+
+  createOptions () {
+    const options = [] // empty array called options
+    options.push('1. Jump out of Window')
+    options.push('2. Inspect room')
+    return options
+  }
+
+  displayOptions () {
+    this.refreshOptions()
+    console.log(`Here are your options :\n${this.options.join('\n')}`)
+  }
+
+  refreshOptions () {
+    this.options = this.createOptions()
+  }
+
+  handleInput (input) {
+    switch (parseInt(input)) {
+      case 1:
+        this.jumpOutOfWindow()
+        break
+      case 2:
+        this.inspectRoom()
+        break
+    }
+  }
+
+  jumpOutOfWindow () {
+    console.log(
+`─▄▀▀▀▀▄─█──█────▄▀▀█─▄▀▀▀▀▄─█▀▀▄
+─█────█─█──█────█────█────█─█──█
+─█────█─█▀▀█────█─▄▄─█────█─█──█
+─▀▄▄▄▄▀─█──█────▀▄▄█─▀▄▄▄▄▀─█▄▄▀
+─────────▄██████▀▀▀▀▀▀▄
+─────▄█████████▄───────▀▀▄▄
+──▄█████████████───────────▀▀▄
+▄██████████████─▄▀───▀▄─▀▄▄▄──▀▄
+███████████████──▄▀─▀▄▄▄▄▄▄────█
+█████████████████▀█──▄█▄▄▄──────█
+███████████──█▀█──▀▄─█─█─█───────█
+████████████████───▀█─▀██▄▄──────█
+█████████████████──▄─▀█▄─────▄───█
+█████████████████▀███▀▀─▀▄────█──█
+████████████████──────────█──▄▀──█
+████████████████▄▀▀▀▀▀▀▄──█──────█
+████████████████▀▀▀▀▀▀▀▄──█──────█
+▀████████████████▀▀▀▀▀▀──────────█
+──███████████████▀▀─────█──────▄▀
+──▀█████████████────────█────▄▀
+────▀████████████▄───▄▄█▀─▄█▀
+──────▀████████████▀▀▀──▄███
+──────████████████████████─█
+─────████████████████████──█
+────████████████████████───█
+────██████████████████─────█
+────██████████████████─────█
+────██████████████████─────█
+────██████████████████─────█
+────██████████████████▄▄▄▄▄█
+─────────────█─────█─█──█─█───█
+─────────────█─────█─█──█─▀█─█▀
+─────────────█─▄█▄─█─█▀▀█──▀█▀
+─────────────██▀─▀██─█──█───█
+Congratulations, you are dead !!`)
+
+    playAgain()
+  }
+
+  inspectRoom () {
+    global.state = 'room'
   }
 }
 
@@ -501,6 +584,7 @@ function initialiseObjects () {
   objects.desk = new Desk()
   objects.wallPic = new WallPic()
   objects.safe = new WallSafe()
+  objects.window = new Window()
   return objects
 }
 
