@@ -17,6 +17,8 @@
   "homepage": "https://github.com/shashikhaya/demo_game#readme",
   "type": "module",
   "dependencies": {
+    "chalk": "^4.1.0",
+    "colors": "^1.4.0",
     "futil-js": "^1.67.3",
     "lodash": "^4.17.21",
     "prompt-sync": "^4.2.0"

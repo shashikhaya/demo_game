@@ -2,6 +2,8 @@
 
 import promptSync from 'prompt-sync'
 import { exit } from 'process'
+import chalk from 'chalk'
+//const chalk = chalk()
 const prompt = promptSync({ sigint: true })
 
 class Room {
@@ -186,13 +188,13 @@ class StartMenu {
     console.log(
       `The rules are simple...
       
-      You are stuck in the room and you need to get escape!
+      You are stuck in the room and you need to escape!
 
       1. To escape the room you should inspect and interact with the different objects in the room to look for clues and items which will help you in your quest.
       2. On each round, we will tell you what options you have and you must choose one of those options. To do so, you just need to insert the option number and we will do the rest
       3. Play in fullscreen for the best experience
-      3. If you start feeling claustrophic, take a deep breath, relax and remember it is only a game :)
-      4. Have fun, check out the source on ( https://github.com/shashikhaya/demo_game ) and let us know what you think
+      3. If you start feeling claustrophobic, take a deep breath, relax and remember it is only a game :)
+      4. Have fun, check out the source on ( https://github.com/shashikhaya/demo_game ) and let us know what you think!
       `)
   }
 }
@@ -259,7 +261,9 @@ ${this.guesses >= 3 ? this.hint : `${3 - this.guesses} guesses before hint shown
       if (correct.includes(ans.toLowerCase())) {
         this.safeRevealed = true
         console.log('You are correct! The picture on the wall moved to reveal a safe')
-      } else if (ans.toLowerCase() === 'quit') { break } else {
+      } else if (ans.toLowerCase() === 'quit') { 
+        break 
+      } else {
         console.log('Thats not right, try again!')
         this.guesses++
       }
@@ -315,7 +319,7 @@ ${this.guesses >= 3 ? this.hint : `${3 - this.guesses} guesses before hint shown
 class WallSafe {
   constructor () {
     this.options = this.createOptions()
-    this.password = '0121'
+    this.password = '1234'
     this.unlocked = false // if unlocked == true -> user can open safe door
     this.guesses = 0 // counter for attemped guesses of person in picture
     this.hint = 'Hint : Look in the picture on the desk'
@@ -405,7 +409,7 @@ function main () {
 
   // enter game loop
   do {
-    console.log('')
+    console.log('--------------------------------------------------------------------')
     updateStatus()
     askQuestion()
     counter++
@@ -464,9 +468,9 @@ function getElapsedTime (initTime) {
 }
 function updateStatus () {
   updateInventory()
-  console.log(
+  console.log( 
 `You are now inspecting the ${global.state}
-Inventory: ${global.inventory}
+Inventory: ${global.inventory.includes('Key') ? chalk.yellow.bold(global.inventory) : global.inventory} 
 `)
   // if global.keyfound {console.log(inventory)}
   global.objectDict[global.state].displayOptions() // displaying updated options for the currently inspected object
