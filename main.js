@@ -13,6 +13,7 @@ class Room {
 
   createOptions () {
     const options = [] // empty array called options
+<<<<<<< Updated upstream
     options.push('1. Inspect desk') // adding option 1
 <<<<<<< Updated upstream
     options.push('2. Try door') // adding option 2
@@ -20,6 +21,13 @@ class Room {
     options.push('2. Inspect picture on the wall')
     options.push('3. Try door') // adding option 2
     options.push('4. Inspect Window')
+>>>>>>> Stashed changes
+=======
+    options.push('1. Inspect desk') // adding option 
+    options.push('2. Inspect picture on the wall')
+    options.push('3. Inspect Window')
+    options.push('4. Try door') // adding option 2
+    options.push('5. Give up')
 >>>>>>> Stashed changes
     return options
   }
@@ -35,6 +43,10 @@ class Room {
 
   handleInput (input) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     if (input > this.options.length) {
       console.log('error')
     } else {
@@ -42,6 +54,7 @@ class Room {
         case 1:
           this.inspectDesk()
           break
+<<<<<<< Updated upstream
         case 2: this.tryDoor()
           break
       }
@@ -63,6 +76,26 @@ class Room {
     }
   }
 
+=======
+        case 2:
+          this.inspectWallPic()
+          break
+        case 3: inspectWindow()
+          break
+        case 4: this.tryDoor() /////////////////////////////// CHANGES /////////////////////////////////
+          break
+        case 5:
+          return exit()  
+        default: console.log('Error, you cant do that! Try again')
+          break
+    }
+  }
+
+  inspectWallPic () {
+    global.state = 'wallPic'
+    global.objectDict[global.state].displayPicture()
+  }  
+>>>>>>> Stashed changes
   inspectDesk () {
     global.state = 'desk'
   }
@@ -105,9 +138,12 @@ class Desk {
   }
 
   handleInput (input) {
+<<<<<<< Updated upstream
     if (input > this.options.length) { // check that input is valid
       console.log('Error, you cant do that! Try again')
     } else { // choose which method to call
+=======
+>>>>>>> Stashed changes
       switch (parseInt(input)) {
         case 1:
           this.toggleDraw()
@@ -119,6 +155,14 @@ class Desk {
 
         case 3: this.inspectRoom()
           break
+<<<<<<< Updated upstream
+=======
+        case 4:
+          return exit()
+
+      default: console.log('Error, you cant do that! Try again')
+        break
+>>>>>>> Stashed changes
       }
     }
   }
@@ -254,7 +298,12 @@ class WallPic {
       case 2:
         this.inspectRoom()
         break
+<<<<<<< Updated upstream
 
+=======
+       case 3:
+        return exit()
+>>>>>>> Stashed changes
       default: console.log('Error, you cant do that! Try again')
         break
     }
@@ -360,18 +409,29 @@ class Window {            /////////////////////////////// CHANGES //////////////
   handleInput (input) {
     switch (parseInt(input)) {
       case 1:
+<<<<<<< Updated upstream
         this.inspectWindow()
         break
 
+=======
+        this.jumpOutOfWindow()
+        break
+>>>>>>> Stashed changes
       case 2:
         this.inspectRoom()
         break 
     }
 
+<<<<<<< Updated upstream
   inspectWindow() {
     global.state= 'room'
     console.log( 
 ─▄▀▀▀▀▄─█──█────▄▀▀█─▄▀▀▀▀▄─█▀▀▄
+=======
+    jumpOutOfWindow() {
+    console.log( 
+`─▄▀▀▀▀▄─█──█────▄▀▀█─▄▀▀▀▀▄─█▀▀▄
+>>>>>>> Stashed changes
 ─█────█─█──█────█────█────█─█──█
 ─█────█─█▀▀█────█─▄▄─█────█─█──█
 ─▀▄▄▄▄▀─█──█────▀▄▄█─▀▄▄▄▄▀─█▄▄▀
@@ -407,6 +467,7 @@ class Window {            /////////////////////////////// CHANGES //////////////
 ─────────────█─────█─█──█─▀█─█▀
 ─────────────█─▄█▄─█─█▀▀█──▀█▀
 ─────────────██▀─▀██─█──█───█
+<<<<<<< Updated upstream
 "Congratulations, you are dead !!" )
   }
  }
@@ -415,6 +476,16 @@ class Window {            /////////////////////////////// CHANGES //////////////
       global.state = 'room'
     }
 
+=======
+Congratulations, you are dead !!`)
+ playAgain()  
+ }
+}
+  inspectRoom() {
+      global.state = 'room'
+    }
+  
+>>>>>>> Stashed changes
 }
 
 class WallSafe {
@@ -453,7 +524,12 @@ class WallSafe {
       case 2:
         this.inspectWallPic()
         break
+<<<<<<< Updated upstream
 
+=======
+      case 4:
+        return exit()
+>>>>>>> Stashed changes
       default: console.log('Error, you cant do that! Try again')
         break
     }
@@ -490,6 +566,7 @@ ${this.guesses >= 3 ? this.hint : `${3 - this.guesses} guesses before hint shown
 
 >>>>>>> Stashed changes
 function main () {
+<<<<<<< Updated upstream
   console.log(
     `
       sSSs    sSSs    sSSs   .S_SSSs     .S_sSSs      sSSs         .S_sSSs      sSSs_sSSs      sSSs_sSSs     .S_SsS_S.   
@@ -511,13 +588,29 @@ function main () {
  `
   )
   // initialise game
+=======
+  displayWelcomeMessage()
+  global.startMenu = new StartMenu()
+  do { // maybe turn into startLoop function
+    global.startMenu.displayOptions()
+    console.log(`What would you like to do next? Pick between 1 and ${global.startMenu.options.length}`)
+    const ans = prompt('>  ')
+    global.startMenu.handleInput(ans)
+  } while (!global.startMenu.gameStarted)                                                                                                                                                                                                                     
+     // initialise game - maybe turn into gameLoop function                                     
+>>>>>>> Stashed changes
   global.objectDict = initialiseObjects()
   global.state = 'room'
   global.inventory = 'Empty'
   var counter = 0
   const INIT_TIME_MS = Date.now() // Could change -> maybe not necessary -> get elapsed time by subtracting date.now() at start and finish
   global.keyFound = false
+<<<<<<< Updated upstream
   // game initialised
+=======
+  global.safeUnlocked = false
+  
+>>>>>>> Stashed changes
 
   // enter game loop
   do {
@@ -533,7 +626,31 @@ function main () {
 
   playAgain()
 }
+<<<<<<< Updated upstream
 
+=======
+function displayWelcomeMessage () {
+  console.log(
+    `
+      sSSs    sSSs    sSSs   .S_SSSs     .S_sSSs      sSSs         .S_sSSs      sSSs_sSSs      sSSs_sSSs     .S_SsS_S.   
+    d%%SP   d%%SP   d%%SP  .SS~SSSSS   .SS~YS%%b    d%%SP        .SS~YS%%b    d%%SP~YS%%b    d%%SP~YS%%b   .SS~S*S~SS.  
+   d%S'    d%S'    d%S'    S%S   SSSS  S%S    S%b  d%S'          S%S    S%b  d%S'      S%b  d%S'      S%b  S%S  Y' S%S  
+   S%S     S%|     S%S     S%S    S%S  S%S    S%S  S%S           S%S    S%S  S%S       S%S  S%S       S%S  S%S     S%S  
+   S&S     S&S     S&S     S%S SSSS%S  S%S    d*S  S&S           S%S    d*S  S&S       S&S  S&S       S&S  S%S     S%S  
+   S&S_Ss  Y&Ss    S&S     S&S  SSS%S  S&S   .S*S  S&S_Ss        S&S   .S*S  S&S       S&S  S&S       S&S  S&S     S&S  
+   S&S~SP   S&&S   S&S     S&S    S&S  S&S_sdSSS   S&S~SP        S&S_sdSSS   S&S       S&S  S&S       S&S  S&S     S&S  
+   S&S        S*S  S&S     S&S    S&S  S&S~YSSY    S&S           S&S~YSY%b   S&S       S&S  S&S       S&S  S&S     S&S  
+   S*b        l*S  S*b     S*S    S&S  S*S         S*b           S*S    S%b  S*b       d*S  S*b       d*S  S*S     S*S  
+   S*S.      .S*P  S*S.    S*S    S*S  S*S         S*S.          S*S    S%S  S*S.     .S*S  S*S.     .S*S  S*S     S*S  
+    SSSbs  sSS*S    SSSbs  S*S    S*S  S*S          SSSbs        S*S    S&S   SSSbs_sdSSS    SSSbs_sdSSS   S*S     S*S  
+     YSSP  YSS'      YSSP  SSS    S*S  S*S           YSSP        S*S    SSS    YSSP~YSSY      YSSP~YSSY    SSS     S*S  
+                                  SP   SP                        SP                                                SP   
+                                  Y    Y                         Y                                                 Y    
+                                                                    Designed and developed by Shashi, Joseph & Danyaal                                                                                                                                                                                                                                 
+                                         
+ `)
+}
+>>>>>>> Stashed changes
 function playAgain () {
   console.log('')
   console.log('Would you like to play again? \'Yes\' or \'No\'')
@@ -554,9 +671,16 @@ function getElapsedTime (initTime) {
 }
 function updateStatus () {
   updateInventory()
+<<<<<<< Updated upstream
   console.log(`You are now inspecting the ${global.state}`)
   console.log(`Inventory: ${global.inventory}`)
   // if global.keyfound {console.log(inventory)}
+=======
+  console.log(
+`You are now inspecting the ${global.state}
+Inventory: ${global.inventory}
+`)  // if global.keyfound {console.log(inventory)}
+>>>>>>> Stashed changes
   global.objectDict[global.state].displayOptions() // displaying updated options for the currently inspected object
 }
 function updateInventory () {
@@ -564,7 +688,12 @@ function updateInventory () {
 }
 
 function askQuestion () {
+<<<<<<< Updated upstream
   console.log(`What would you like to do next? Pick between 1 and ${global.objectDict[global.state].options.length}`)
+=======
+  console.log(`
+  What would you like to do next? Pick between 1 and ${global.objectDict[global.state].options.length}`)
+>>>>>>> Stashed changes
   const ans = prompt('>  ')
   global.objectDict[global.state].handleInput(ans)
 }
