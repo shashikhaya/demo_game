@@ -1,34 +1,44 @@
+/* eslint-disable quotes */
 /* eslint-disable no-var */
-import * as escRm from './classes.js'
 
+// imports
+import * as escRm from './classes.js'
 import { exit } from 'process'
 import chalk from 'chalk'
 import promptSync from 'prompt-sync'
 const prompt = promptSync({ sigint: true })
 
+/* main changes required
+1. Make Game class with all of the general functions
+2. apply composition to classes so that they are all related and can use eachothers methods and properties (get rid of all the global parameters)
+3. make general functions for the inspectX methods in the objects
+4. add more detail into actions. e.g. some text to describe what the result of their move was 
 
+
+*/
+
+// main function
 function main () {
-  displayWelcomeMessage()
-  global.startMenu = new escRm.StartMenu()
-  startLoop()
+  displayWelcomeMessage() // display welcome message
+  global.startMenu = new escRm.StartMenu() // create startMenu Object -> has the rules and handles the user input for the start loop
+  startLoop() // start loop -> should probably be in the startMenu object
 
-  // initialise game - maybe turn into gameLoop function
-  global.KEY_LOCATION = getRandomInt(2)
-  global.objectDict = initialiseObjects()
-  global.state = 'room'
-  global.inventory = 'Empty'
+  // initialise game parameters
+  global.KEY_LOCATION = getRandomInt(2) // used to randomise where the key is (either in the safe or in the desk-drawer)
+  global.objectDict = initialiseObjects() // global dictionary with all object instances in it (the game applies different keys to transverse through states)
+  global.state = 'room' // initial state (in the room)
+  global.inventory = 'Empty' // inventory starts empty (currently it can only have a key in it, but should add more objects as game develops)
   global.moveCount = 0
-  global.INIT_TIME_MS = Date.now() //
-  global.keyFound = false
-  global.safeUnlocked = false
+  global.INIT_TIME_MS = Date.now() // time gameplay started (used to calculate the elapsed time when the user has escaped)
+  global.keyFound = false // changes whether the door can be unlocked (proper composition would remove these globals)
+  global.safeUnlocked = false // changes whether the safe can be unlocked (isnt actually being used!!??)
 
   // enter game loop
-  gameLoop()
-  playAgain()
+  gameLoop() // game loop repeats until user has either quit or won
+  playAgain() // gives user option to quit or play again -> repeats until correct input has been provided
 }
 
-
-function displayWelcomeMessage () {
+function displayWelcomeMessage () { // first thing shown when main function called
   console.log(
     `
       sSSs    sSSs    sSSs   .S_SSSs     .S_sSSs      sSSs         .S_sSSs      sSSs_sSSs      sSSs_sSSs     .S_SsS_S.   
@@ -49,30 +59,30 @@ function displayWelcomeMessage () {
 `)
 }
 
-function startLoop () {
-
-  do { // maybe turn into startLoop function
+function startLoop () { // user can either display rules, start game or quit
+  do {
     global.startMenu.displayOptions()
-    console.log(`What would you like to do next? Pick between 1 and ${global.startMenu.options.length}`)
-    const ans = prompt('>  ')
-    global.startMenu.handleInput(ans)
-  } while (!global.startMenu.gameStarted)
+    console.log(`What would you like to do next? Pick between 1 and ${global.startMenu.options.length}`) // question
+    const ans = prompt('>  ') // answer
+    global.startMenu.handleInput(ans) // handle answer
+  } while (!global.startMenu.gameStarted) // repeat until game started or user quits
 }
 
-function gameLoop () {
-  console.log(
+function gameLoop () { // game mechanics
+  console.log( 
 `##################################################### GAME STARTED #####################################################`)
   do {
-    updateStatus()
-    askQuestion()
-    global.moveCount++
-  } while (!global.objectDict.room.doorOpen)
+    updateStatus() // tell user what move they are on, where they are and what they have in the inventory
+    askQuestion() // asks for next move and handles answer
+    global.moveCount++ 
+  } while (!global.objectDict.room.doorOpen) // stopping condition (room is open)
 
+  // if game complete print this
   console.log(
     `Well done, you have escaped in ${global.moveCount} moves and it took you ${getElapsedTime(global.INIT_TIME_MS)[0]} minutes and ${getElapsedTime(global.INIT_TIME_MS)[1]} seconds.`)
 }
 
-function playAgain () {
+export function playAgain () { // if user wants to play again -> recall main function else exit. if input is invalid then call playAgain (recursive fn)
   console.log('')
   console.log('Would you like to play again? \'Yes\' or \'No\'')
   const ans = prompt('>  ')
@@ -93,10 +103,10 @@ function getElapsedTime (initTime) {
   const seconds = Math.round((timeInMins - minutes) * 60)
   return [minutes, seconds]
 }
-function updateStatus () {
+function updateStatus () { // let user know their status after each move
   updateInventory()
   console.log(`
-##################################################### Move Number ${global.moveCount} ####################################################
+##################################################### Move Number ${global.moveCount + 1} ####################################################
  
 You are now inspecting the ${global.state} 
  Inventory: ${global.inventory.includes('Key') ? chalk.yellow.bold(global.inventory) : global.inventory}  
@@ -104,23 +114,23 @@ You are now inspecting the ${global.state}
   // if global.keyfound {console.log(inventory)}
   global.objectDict[global.state].displayOptions() // displaying updated options for the currently inspected object
 }
-function updateInventory () {
-  if ((global.keyFound) && !(global.inventory.includes('Key'))) { global.inventory = ['Key'] }
+function updateInventory () { // if uswer has key update the inventory
+  if ((global.keyFound) && !(global.inventory.includes('Key'))) { global.inventory = ['Key'] } 
 }
 
-function askQuestion () {
+function askQuestion () { // let user progress through game  (global.objectDict[global.state] makes sure the right options and handling of answer happens)
   console.log(`
-What would you like to do next? Pick between 1 and ${global.objectDict[global.state].options.length}`)
-  const ans = prompt('>  ')
-  global.objectDict[global.state].handleInput(ans)
+What would you like to do next? Pick between 1 and ${global.objectDict[global.state].options.length}`) // question
+  const ans = prompt('>  ') // answer
+  global.objectDict[global.state].handleInput(ans) // handle answer
 }
 
-function getRandomInt (max) {
+function getRandomInt (max) { // used to randomise key location
   return (Math.floor(Math.random() * Math.floor(max) + 1)) // from 1 up to and including max
 }
 
-function initialiseObjects () {
-  const objects = {}
+function initialiseObjects () { // create dictionary with objects in game -> composition would remove the need for this?
+  const objects = {} // keys = location : values = objects (e.g room:Room())
   objects.room = new escRm.Room()
   objects.desk = new escRm.Desk()
   objects.wallPic = new escRm.WallPic()
@@ -129,4 +139,4 @@ function initialiseObjects () {
   return objects
 }
 
-main()
+main() // call to main fn (called when file is run)

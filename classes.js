@@ -1,19 +1,30 @@
+// imports
 import * as main from './main.js'
 import { exit } from 'process'
 import chalk from 'chalk'
 import promptSync from 'prompt-sync'
 const prompt = promptSync({ sigint: true })
 
+/* General class structure:
+1. properties:
+a. options [array] (holds the move options for that object e.g. desk -> open/close door)
+2. methods
+a. handleInputs() -> handle the user input by either calling an object specific method or changing the game state global.state
+i. object specific methods
+ii. inspectX -> changes the game state
+b. create options, refresh options and display options -> options are dynamic so they change with respect to the game status e.g. if drawer open, option become close drawer etc
+
+*/
 
 export class Room {
   constructor () {
     this.options = this.createOptions()
-    this.doorOpen = false
+    this.doorOpen = false // global stopping condition (when this is set to true -> door is open, thus the user has escaped)
   }
 
   createOptions () {
     const options = [] // empty array called options
-    options.push('1. Inspect desk') // adding option 1
+    options.push('1. Inspect desk') 
     options.push('2. Inspect picture on the wall')
     options.push('3. Inspect Window')
     options.push('4. Try door') // adding option 2
@@ -21,16 +32,16 @@ export class Room {
     return options
   }
 
-  displayOptions () {
+  displayOptions () { // make options a string and display it
     this.refreshOptions()
     console.log(`Here are your options :\n${this.options.join('\n')}`)
   }
 
-  refreshOptions () {
+  refreshOptions () { // this doesnt really do anything -> not necessary
     this.options = this.createOptions()
   }
 
-  handleInput (input) {
+  handleInput (input) { // handle inputs, if it is not valid log error and ask again
     switch (parseInt(input)) {
       case 1:this.inspectDesk()
         break
@@ -41,26 +52,26 @@ export class Room {
       case 4:this.tryDoor()
         break
       case 5:
-        return exit()
+        return exit() // quit game
       default: console.log('Error, you cant do that! Try again')
         break
     }
   }
 
-  inspectWallPic () {
+  inspectWallPic () { 
     global.state = 'wallPic'
-    global.objectDict[global.state].displayPicture()
+    global.objectDict[global.state].displayPicture() // displays picture, composition would make this alot better as the room has a wall picture
   }
 
-  inspectDesk () {
+  inspectDesk () { // change global state -> should be made a general function ?
     global.state = 'desk'
   }
 
-  inspectWindow () {
+  inspectWindow () { // change global state -> should be made a general function ?
     global.state = 'window'
   }
 
-  tryDoor () {
+  tryDoor () { // if keyFound then open, otherwise dont allow it
     if (global.keyFound) {
       this.doorOpen = true
     } else {
